@@ -55,7 +55,6 @@ const Home: NextPage = () => {
     setDice([])
 
     const rollables = parse(input) as Rollable[]
-    console.log(rollables.map((r) => r.value()))
     setDice(rollables.map(generateWrapper))
   }
 
@@ -88,7 +87,10 @@ const Home: NextPage = () => {
             placeholder="Enter dice pattern..."
             className="text-slate-700 rounded px-1"
           />
-          <input type="submit" className="border rounded px-2" />
+          <input
+            type="submit"
+            className="cursor-pointer border rounded px-2 hover:bg-gray-900 hover:border-transparent"
+          />
         </form>
       </div>
       <div className="flex flex-row h-screen w-screen pb-4 pt-4">
