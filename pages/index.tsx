@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Image from 'next/image'
-import { FormEventHandler, useState } from 'react'
+import { FormEventHandler, KeyboardEvent, useState } from 'react'
 import {
   Die as Rollable,
   d2,
@@ -62,16 +62,16 @@ const Home: NextPage = () => {
     setInput((e.target as HTMLInputElement).value)
   }
 
-  const handleFormSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault()
-
-    handleParse(input)
-    setInput('')
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleParse(input)
+      setInput('')
+    }
   }
 
   return (
-    <div className="bg-gray-800 text-slate-300 flex flex-col w-screen h-full pb-4 pt-4 ">
-      <div className="flex flex-row justify-between pl-4 pr-4">
+    <div className="bg-gray-800 text-slate-300 flex flex-col w-screen h-full pb-4 pt-4">
+      <div className="flex flex-col sm:flex-row justify-between pl-4 pr-4">
         <Image
           src="/vercel.svg"
           alt="logo: placeholder"
@@ -79,19 +79,21 @@ const Home: NextPage = () => {
           height="32"
         />
 
-        <form onSubmit={handleFormSubmit} className="space-x-2">
-          <input
-            type="text"
-            value={input}
-            onChange={handleChange}
-            placeholder="Enter dice pattern..."
-            className="text-slate-700 rounded px-1"
-          />
-          <input
-            type="submit"
-            className="cursor-pointer border rounded px-2 hover:bg-gray-900 hover:border-transparent"
-          />
-        </form>
+        <div className="pt-4 sm:pt-0">
+          <div className="relative flex flex-wrap items-stretch w-full mb-4">
+            <input
+              type="search"
+              value={input}
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter dice pattern..."
+              className="relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-gray-700 focus:outline-none"
+            />
+            <button className="px-6 py-2.5 bg-gray-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-600 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out flex items-center">
+              Roll
+            </button>
+          </div>
+        </div>
       </div>
       <div className="flex flex-row h-screen w-screen pb-4 pt-4">
         <div className="flex flex-col justify-around w-fit">
