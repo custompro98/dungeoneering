@@ -9,9 +9,9 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className='flex flex-col justify-between h-screen bg-gray-800 text-slate-200'>
+    <div className='flex flex-col justify-between h-screen w-screen bg-gray-800 text-slate-200'>
       <Navbar />
-      <main>{children}</main>
+      <main className="flex flex-row justify-center h-full w-full">{children}</main>
       <Footer />
     </div>
   )
