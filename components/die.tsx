@@ -18,7 +18,7 @@ const Die = ({ rollable, onReroll }: Props) => {
   }
 
   return (
-    <div className="flex flex-col basis-1/5 justify-center items-center border h-12 w-12">
+    <div className="flex flex-col items-center border h-12 w-12">
       {result}
       <button onClick={handleClick} className="hover:bg-gray-600 text-xs">Reroll</button>
     </div>
