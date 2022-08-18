@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 
-import { FormEventHandler, KeyboardEvent, useState } from 'react'
+import { useState } from 'react'
+import type { FormEventHandler, KeyboardEvent } from 'react'
 import {
   Die as Rollable,
   d2,
@@ -104,7 +105,7 @@ const Tray: NextPage = () => {
       <div className="flex flex-col h-full w-full">
         <div className="flex flex-row justify-center min-w-full">
           <input
-            type="search"
+            type="text"
             value={input}
             onChange={handleChange}
             onKeyPress={handleKeyPress}
