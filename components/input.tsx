@@ -1,6 +1,6 @@
 import React from 'react'
 
-export enum InputType {
+enum InputType {
   Text = 0,
   Number = 1,
 }
@@ -10,7 +10,7 @@ const typeMap = {
   [InputType.Number]: 'number',
 }
 
-export enum Width {
+enum Width {
   XSmall = 0,
   Small = 1,
   Medium = 2,
@@ -55,7 +55,6 @@ type Props = {
 
 const Input = ({ input, button }: Props) => {
   const isEmpty = (s: string) => s.length === 0
-  const isControlled = input.value !== undefined
 
   const inputClasses: string[] = [
     'relative',
@@ -119,9 +118,9 @@ const Input = ({ input, button }: Props) => {
     <>
       <input
         type={typeMap[input.type]}
-        value={isControlled ? input.value : undefined}
+        value={input.value}
         placeholder={input.placeholder}
-        onChange={isControlled ? input.onChange : undefined}
+        onChange={input.onChange}
         onKeyPress={input.onKeyPress}
         min={input.min}
         max={input.max}
@@ -137,3 +136,4 @@ const Input = ({ input, button }: Props) => {
 }
 
 export default Input
+export { InputType, Width }

@@ -17,6 +17,7 @@ import type { RollFunction } from 'roller.ts'
 import { v4 as uuidv4 } from 'uuid'
 
 import Die from '../components/die'
+import Input, { InputType, Width } from '../components/input'
 
 const diceMap: { [key: string]: RollFunction } = {
   2: d2,
@@ -65,6 +66,7 @@ const Tray: NextPage = () => {
   }
 
   const handleClick: FormEventHandler<HTMLButtonElement> = (e) => {
+    console.log(input)
     e.preventDefault()
     handleParse(input)
   }
@@ -104,20 +106,20 @@ const Tray: NextPage = () => {
       </div>
       <div className="flex flex-col h-full w-full">
         <div className="flex flex-row justify-center min-w-full">
-          <input
-            type="text"
-            value={input}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            placeholder="Enter dice pattern..."
-            className="relative flex-auto min-w-0 max-w-xl block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded rounded-r-none transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-gray-700 focus:outline-none"
+          <Input
+            input={{
+              type: InputType.Text,
+              width: Width.XLarge,
+              value: input,
+              placeholder: 'Enter dice pattern...',
+              onChange: handleChange,
+              onKeyPress: handleKeyPress,
+            }}
+            button={{
+              text: 'Roll',
+              onClick: handleClick,
+            }}
           />
-          <button
-            className="px-6 py-2.5 bg-gray-500 text-white font-medium text-xs leading-tight uppercase rounded rounded-l-none shadow-md hover:bg-gray-600 hover:shadow-lg focus:bg-gray-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-800 active:shadow-lg transition duration-150 ease-in-out flex items-center border border-solid border-gray-300 border-l-0"
-            onClick={handleClick}
-          >
-            Roll
-          </button>
         </div>
         <div className="flex flex-row flex-wrap h-fit min min-w-full mt-8">
           {dice.map((die) => (

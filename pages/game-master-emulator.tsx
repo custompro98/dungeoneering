@@ -1,65 +1,24 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
-import type { FormEventHandler } from 'react'
+import type { ChangeEventHandler, FormEventHandler } from 'react'
 
-const odds: string[] = [
-  'impossible',
-  'no way',
-  'very unlikely',
-  'unlikely',
-  '50/50',
-  'somewhat likely',
-  'likely',
-  'very likely',
-  'near sure thing',
-  'a sure thing',
-  'has to be',
-]
+import Input, { InputType, Width as InputWidth } from '../components/input'
+import Select, { Width as SelectWidth } from '../components/select'
 
-// nested object representing a fate chart
-// outer key is the chaos factor
-// inner key are the odds
-// value is the chance of a yes
-const fateChart: Record<number, Record<string, number>> = {
-  1: {
-    [odds[0]]: -20,
-    [odds[1]]: 0,
-    [odds[2]]: 5,
-    [odds[3]]: 5,
-    [odds[4]]: 10,
-    [odds[5]]: 20,
-    [odds[6]]: 25,
-    [odds[7]]: 45,
-    [odds[8]]: 50,
-    [odds[9]]: 55,
-    [odds[10]]: 80,
-  },
-  5: {
-    [odds[0]]: 5,
-    [odds[1]]: 15,
-    [odds[2]]: 25,
-    [odds[3]]: 35,
-    [odds[4]]: 50,
-    [odds[5]]: 65,
-    [odds[6]]: 75,
-    [odds[7]]: 85,
-    [odds[8]]: 90,
-    [odds[9]]: 90,
-    [odds[10]]: 95,
-  },
-}
+import { ChaosFactor, fateChart, Odds, oddsMap } from '../utils/fate-chart'
 
 const GameMasterEmulator: NextPage = () => {
-  const defaultChaosFactor = 5
-  const defaultCurrentOdds = 4
+  const defaultChaosFactor = ChaosFactor.Five
+  const defaultCurrentOdds = Odds.FiftyFifty
+
   const [chaosFactor, setChaosFactor] = useState(defaultChaosFactor)
-  const [currentOdds, setCurrentOdds] = useState(odds[defaultCurrentOdds])
+  const [currentOdds, setCurrentOdds] = useState(defaultCurrentOdds)
   const [chanceYes, setChanceYes] = useState(
-    fateChart[defaultChaosFactor][odds[defaultCurrentOdds]]
+    fateChart[defaultChaosFactor][defaultCurrentOdds]
   )
 
   const handleChaosChange: FormEventHandler<HTMLInputElement> = (e) => {
-    const newChaosFactor = parseInt(e.currentTarget.value)
+    const newChaosFactor = parseInt(e.currentTarget.value) as ChaosFactor
 
     if (!isNaN(newChaosFactor)) {
       setChaosFactor(newChaosFactor)
@@ -67,8 +26,8 @@ const GameMasterEmulator: NextPage = () => {
     }
   }
 
-  const handleCurrentOddsChange: FormEventHandler<HTMLInputElement> = (e) => {
-    const newOdds = e.currentTarget.value
+  const handleCurrentOddsChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    const newOdds = parseInt(e.currentTarget.value) as Odds
     setCurrentOdds(newOdds)
     setChanceYes(fateChart[chaosFactor][newOdds])
   }
@@ -76,21 +35,28 @@ const GameMasterEmulator: NextPage = () => {
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex flex-row justify-center min-w-full">
-        <input
-          type="number"
-          onChange={handleChaosChange}
-          min={1}
-          max={9}
-          placeholder="Enter chaos factor..."
-          className="relative flex-auto min-w-0 max-w-xs block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-gray-700 focus:outline-none"
+        <Input
+          input={{
+            type: InputType.Number,
+            min: 1,
+            max: 9,
+            placeholder: 'Enter chaos factor...',
+            width: InputWidth.XSmall,
+            onChange: handleChaosChange,
+          }}
         />
       </div>
       <div className="flex flex-row justify-center min-w-full">
-        <input
-          type="text"
+        <Select
+          name="current-odds"
+          options={
+            Object.keys(Odds)
+              .map(odds => parseInt(odds) as Odds)
+              .filter(odds => Odds[odds] !== undefined)
+              .map(odds => ({ value: odds, name: oddsMap[odds]}))
+          }
+          width={SelectWidth.XSmall}
           onChange={handleCurrentOddsChange}
-          placeholder="Enter current odds..."
-          className="relative flex-auto min-w-0 max-w-xs block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-gray-700 focus:outline-none"
         />
       </div>
       <p>{chanceYes}</p>
