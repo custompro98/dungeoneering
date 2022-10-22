@@ -35,27 +35,33 @@ const GameMasterEmulator: NextPage = () => {
   }
 
   return (
-    <div className="flex flex-col">
-      <Input
-        input={{
-          type: InputType.Number,
-          min: 1,
-          max: 9,
-          placeholder: 'Enter chaos factor...',
-          width: InputWidth.XSmall,
-          onChange: handleChaosChange,
-        }}
-      />
-      <Select
-        name="current-odds"
-        options={Object.keys(Odds)
-          .map((odds) => parseInt(odds) as Odds)
-          .filter((odds) => Odds[odds] !== undefined)
-          .map((odds) => ({ value: odds, name: oddsMap[odds] }))}
-        width={SelectWidth.XSmall}
-        onChange={handleCurrentOddsChange}
-      />
-      <p>{chanceYes}</p>
+    <div className="flex flex-col min-h-full justify-center">
+      <div className="p-4">
+        <Input
+          input={{
+            type: InputType.Number,
+            min: 1,
+            max: 9,
+            placeholder: 'Enter chaos factor...',
+            width: InputWidth.XSmall,
+            onChange: handleChaosChange,
+          }}
+        />
+      </div>
+      <div className="p-4">
+        <Select
+          name="current-odds"
+          options={Object.keys(Odds)
+            .map((odds) => parseInt(odds) as Odds)
+            .filter((odds) => Odds[odds] !== undefined)
+            .map((odds) => ({ value: odds, name: oddsMap[odds] }))}
+          width={SelectWidth.XSmall}
+          onChange={handleCurrentOddsChange}
+        />
+      </div>
+      <div className="flex p-4 justify-center">
+        <p>{chanceYes}%</p>
+      </div>
     </div>
   )
 }
