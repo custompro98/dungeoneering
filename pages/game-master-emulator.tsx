@@ -44,6 +44,7 @@ const GameMasterEmulator: NextPage = () => {
             max: 9,
             placeholder: 'Enter chaos factor...',
             width: InputWidth.XSmall,
+            value: `${chaosFactor}`,
             onChange: handleChaosChange,
           }}
         />
@@ -54,8 +55,10 @@ const GameMasterEmulator: NextPage = () => {
           options={Object.keys(Odds)
             .map((odds) => parseInt(odds) as Odds)
             .filter((odds) => Odds[odds] !== undefined)
+            .reverse()
             .map((odds) => ({ value: odds, name: oddsMap[odds] }))}
           width={SelectWidth.XSmall}
+          selected={{ value: currentOdds, name: oddsMap[currentOdds] }}
           onChange={handleCurrentOddsChange}
         />
       </div>

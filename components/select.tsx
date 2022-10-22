@@ -31,6 +31,7 @@ type Option = {
 type Props = {
   name: string
   options: Option[]
+  selected?: Option
   width: Width
   onChange: ChangeEventHandler<HTMLSelectElement>
 }
@@ -70,7 +71,11 @@ const Select = (props: Props) => {
       onChange={props.onChange}
     >
       {props.options.map((option) => (
-        <option key={option.value} value={option.value}>
+        <option
+          key={option.value}
+          value={option.value}
+          selected={props.selected && option.value === props.selected.value}
+        >
           {option.name}
         </option>
       ))}
