@@ -58,7 +58,6 @@ const Input = ({ input, button }: Props) => {
 
   const inputClasses: string[] = [
     'relative',
-    'flex-auto',
     'min-w-0',
     `max-w-${widthMap[input.width]}`,
     'block',

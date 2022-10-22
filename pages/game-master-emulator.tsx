@@ -26,39 +26,35 @@ const GameMasterEmulator: NextPage = () => {
     }
   }
 
-  const handleCurrentOddsChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+  const handleCurrentOddsChange: ChangeEventHandler<HTMLSelectElement> = (
+    e
+  ) => {
     const newOdds = parseInt(e.currentTarget.value) as Odds
     setCurrentOdds(newOdds)
     setChanceYes(fateChart[chaosFactor][newOdds])
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
-      <div className="flex flex-row justify-center min-w-full">
-        <Input
-          input={{
-            type: InputType.Number,
-            min: 1,
-            max: 9,
-            placeholder: 'Enter chaos factor...',
-            width: InputWidth.XSmall,
-            onChange: handleChaosChange,
-          }}
-        />
-      </div>
-      <div className="flex flex-row justify-center min-w-full">
-        <Select
-          name="current-odds"
-          options={
-            Object.keys(Odds)
-              .map(odds => parseInt(odds) as Odds)
-              .filter(odds => Odds[odds] !== undefined)
-              .map(odds => ({ value: odds, name: oddsMap[odds]}))
-          }
-          width={SelectWidth.XSmall}
-          onChange={handleCurrentOddsChange}
-        />
-      </div>
+    <div className="flex flex-col">
+      <Input
+        input={{
+          type: InputType.Number,
+          min: 1,
+          max: 9,
+          placeholder: 'Enter chaos factor...',
+          width: InputWidth.XSmall,
+          onChange: handleChaosChange,
+        }}
+      />
+      <Select
+        name="current-odds"
+        options={Object.keys(Odds)
+          .map((odds) => parseInt(odds) as Odds)
+          .filter((odds) => Odds[odds] !== undefined)
+          .map((odds) => ({ value: odds, name: oddsMap[odds] }))}
+        width={SelectWidth.XSmall}
+        onChange={handleCurrentOddsChange}
+      />
       <p>{chanceYes}</p>
     </div>
   )
