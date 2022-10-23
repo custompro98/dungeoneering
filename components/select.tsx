@@ -68,13 +68,13 @@ const Select = (props: Props) => {
     <select
       name={props.name}
       className={classes.join(' ')}
+      value={props.selected?.value}
       onChange={props.onChange}
     >
       {props.options.map((option) => (
         <option
           key={option.value}
           value={option.value}
-          selected={props.selected && option.value === props.selected.value}
         >
           {option.name}
         </option>
