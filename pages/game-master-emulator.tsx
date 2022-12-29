@@ -13,16 +13,18 @@ const GameMasterEmulator: NextPage = () => {
 
   const [chaosFactor, setChaosFactor] = useState(defaultChaosFactor)
   const [currentOdds, setCurrentOdds] = useState(defaultCurrentOdds)
-  const [chanceYes, setChanceYes] = useState(
+  const [chances, setChances] = useState(
     fateChart[defaultChaosFactor][defaultCurrentOdds]
   )
+
+  const [chanceExtremeYes, chanceYes, chanceExtremeNo] = chances
 
   const handleChaosChange: FormEventHandler<HTMLInputElement> = (e) => {
     const newChaosFactor = parseInt(e.currentTarget.value) as ChaosFactor
 
     if (!isNaN(newChaosFactor)) {
       setChaosFactor(newChaosFactor)
-      setChanceYes(fateChart[newChaosFactor][currentOdds])
+      setChances(fateChart[newChaosFactor][currentOdds])
     }
   }
 
@@ -31,11 +33,11 @@ const GameMasterEmulator: NextPage = () => {
   ) => {
     const newOdds = parseInt(e.currentTarget.value) as Odds
     setCurrentOdds(newOdds)
-    setChanceYes(fateChart[chaosFactor][newOdds])
+    setChances(fateChart[chaosFactor][newOdds])
   }
 
   return (
-    <div className="flex flex-col min-h-full justify-center">
+    <div className="flex flex-col justify-center min-h-full">
       <div className="p-4">
         <Input
           input={{
@@ -62,8 +64,19 @@ const GameMasterEmulator: NextPage = () => {
           onChange={handleCurrentOddsChange}
         />
       </div>
-      <div className="flex p-4 justify-center">
-        <p>{chanceYes}%</p>
+      <div className="flex flex-col justify-center self-center p-4">
+        <div>
+          <span className='font-bold'>Extreme Yes: </span>
+          <span>{chanceExtremeYes}%</span>
+        </div>
+        <div>
+          <span className='font-bold'>Yes: </span>
+          <span>{chanceYes}%</span>
+        </div>
+        <div>
+          <span className='font-bold'>Extreme No: </span>
+          <span>{chanceExtremeNo}%</span>
+        </div>
       </div>
     </div>
   )
