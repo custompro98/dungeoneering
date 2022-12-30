@@ -23,7 +23,6 @@ const GameMasterEmulator: NextPage = () => {
   const chosenFate = 'text-amber-300 p-4'
 
   const [fate, setFate] = useState(FATE.NONE)
-  const [roll, setRoll] = useState<number>(0)
   const [chaosFactor, setChaosFactor] = useState(defaultChaosFactor)
   const [currentOdds, setCurrentOdds] = useState(defaultCurrentOdds)
   const [chances, setChances] = useState(
@@ -33,7 +32,9 @@ const GameMasterEmulator: NextPage = () => {
   const [chanceExtremeYes, chanceYes, chanceExtremeNo] = chances
 
   useEffect(() => {
-    setRoll(() => d100());
+    const roll = d100();
+
+    console.info(roll);
 
     if (roll <= chanceExtremeYes) {
       setFate(FATE.EXTREME_YES)
@@ -44,7 +45,7 @@ const GameMasterEmulator: NextPage = () => {
     } else {
       setFate(FATE.NO)
     }
-  }, [roll, chanceExtremeYes, chanceYes, chanceExtremeNo])
+  }, [chanceExtremeYes, chanceYes, chanceExtremeNo])
 
   const handleChaosChange: FormEventHandler<HTMLInputElement> = (e) => {
     const newChaosFactor = parseInt(e.currentTarget.value) as ChaosFactor
@@ -91,7 +92,7 @@ const GameMasterEmulator: NextPage = () => {
           onChange={handleCurrentOddsChange}
         />
       </div>
-      <div className="flex flex-col justify-center self-center p-4">
+      <div className="flex flex-col justify-center place-items-center p-4">
         <div className={fate === FATE.EXTREME_YES ? chosenFate : 'p-4'}>
           <span className="font-bold">Extreme Yes ({chanceExtremeYes})</span>
         </div>
