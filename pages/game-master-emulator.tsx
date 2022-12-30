@@ -1,16 +1,29 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ChangeEventHandler, FormEventHandler } from 'react'
 
 import Input, { InputType, Width as InputWidth } from '../components/input'
 import Select, { Width as SelectWidth } from '../components/select'
 
 import { ChaosFactor, fateChart, Odds, oddsMap } from '../utils/fate-chart'
+import { d100 } from 'roller.ts'
+
+enum FATE {
+  NONE,
+  EXTREME_YES,
+  YES,
+  NO,
+  EXTREME_NO,
+}
 
 const GameMasterEmulator: NextPage = () => {
   const defaultChaosFactor = ChaosFactor.Five
   const defaultCurrentOdds = Odds.FiftyFifty
 
+  const chosenFate = 'text-amber-300 p-4'
+
+  const [fate, setFate] = useState(FATE.NONE)
+  const [roll, setRoll] = useState<number>(0)
   const [chaosFactor, setChaosFactor] = useState(defaultChaosFactor)
   const [currentOdds, setCurrentOdds] = useState(defaultCurrentOdds)
   const [chances, setChances] = useState(
@@ -18,6 +31,20 @@ const GameMasterEmulator: NextPage = () => {
   )
 
   const [chanceExtremeYes, chanceYes, chanceExtremeNo] = chances
+
+  useEffect(() => {
+    setRoll(() => d100());
+
+    if (roll <= chanceExtremeYes) {
+      setFate(FATE.EXTREME_YES)
+    } else if (roll <= chanceYes) {
+      setFate(FATE.YES)
+    } else if (chanceExtremeNo > 0 && roll >= chanceExtremeNo) {
+      setFate(FATE.EXTREME_NO)
+    } else {
+      setFate(FATE.NO)
+    }
+  }, [roll, chanceExtremeYes, chanceYes, chanceExtremeNo])
 
   const handleChaosChange: FormEventHandler<HTMLInputElement> = (e) => {
     const newChaosFactor = parseInt(e.currentTarget.value) as ChaosFactor
@@ -65,17 +92,17 @@ const GameMasterEmulator: NextPage = () => {
         />
       </div>
       <div className="flex flex-col justify-center self-center p-4">
-        <div>
-          <span className='font-bold'>Extreme Yes: </span>
-          <span>{chanceExtremeYes}%</span>
+        <div className={fate === FATE.EXTREME_YES ? chosenFate : 'p-4'}>
+          <span className="font-bold">Extreme Yes ({chanceExtremeYes})</span>
         </div>
-        <div>
-          <span className='font-bold'>Yes: </span>
-          <span>{chanceYes}%</span>
+        <div className={fate === FATE.YES ? chosenFate : 'p-4'}>
+          <span className="font-bold">Yes ({chanceYes})</span>
         </div>
-        <div>
-          <span className='font-bold'>Extreme No: </span>
-          <span>{chanceExtremeNo}%</span>
+        <div className={fate === FATE.NO ? chosenFate : 'p-4'}>
+          <span className="font-bold">No ({chanceYes})</span>
+        </div>
+        <div className={fate === FATE.EXTREME_NO ? chosenFate : 'p-4'}>
+          <span className="font-bold">Extreme No ({chanceExtremeNo})</span>
         </div>
       </div>
     </div>
