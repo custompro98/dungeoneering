@@ -9,6 +9,7 @@ import {
   d6,
   d8,
   d10,
+  d12,
   d20,
   d100,
   parse,
@@ -25,6 +26,7 @@ const diceMap: { [key: string]: RollFunction } = {
   6: d6,
   8: d8,
   10: d10,
+  12: d12,
   20: d20,
   100: d100,
 }
@@ -95,6 +97,9 @@ const Tray: NextPage = () => {
           </li>
           <li>
             <button onClick={onAddDie(10)}>d10</button>
+          </li>
+          <li>
+            <button onClick={onAddDie(12)}>d12</button>
           </li>
           <li>
             <button onClick={onAddDie(20)}>d20</button>
