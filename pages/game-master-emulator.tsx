@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import type { ChangeEventHandler, FormEventHandler } from 'react'
 
+import { ChaosFactor, fateChart, Odds, oddsMap } from 'mythic-gme.ts'
+import { d100 } from 'roller.ts'
+
 import Input, { InputType, Width as InputWidth } from '../components/input'
 import Select, { Width as SelectWidth } from '../components/select'
-
-import { ChaosFactor, fateChart, Odds, oddsMap } from '../utils/fate-chart'
-import { d100 } from 'roller.ts'
 
 enum FATE {
   NONE,
